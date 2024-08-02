@@ -22,8 +22,6 @@ toc:
 
 Winter Writeup
 
-<!--more-->
-
 ## Provided code:
 ```python
 import os
@@ -83,7 +81,7 @@ if __name__ == '__main__':
 
 ## Code Description
 
-The Python code implements the **Winternitz One-Time Signature (WOTS)** and includes the following main functionalities:
+The Python code implements the WOTS and includes the following main functionalities:
 
 - `keygen`: Generates a pair of private and public keys.
 - `sign`: Signs a given message using the private key.
@@ -95,33 +93,9 @@ The script reads a message, signs it, and then asks for a new message and its si
 
 The verification method checks if the extracted public key from the provided signature matches the generated public key. The public key components are each of the private keys hashed 256 times.
 
-The signature consists of each of the 32 private keys hashed \(256 - n\) times, where \(n\) is the value of a byte of the message hashed with SHA-256.
+The signature consists of each of the 32 private keys hashed `256 - n` times, where `n` is the value of a byte of the message hashed with SHA-256.
 
-To exploit this, we craft two messages, \(m_1\) and \(m_2\), such that each byte in \(\text{SHA-256}(m_1)\) is greater than \(\text{SHA-256}(m_2)\). Then we calculate the differences between each byte of \(\text{SHA-256}(m_1)\) and \(\text{SHA-256}(m_2)\). The server provides the signature of \(m_1\). We divide this signature into 32 chunks and hash each chunk according to its difference. This gives us the corresponding signature of \(m_2\), revealing the flag.
-
-The verification process can be expressed as:
-
-$$
-\begin{aligned} 
-V_i &= H^{N_i}(sign_i) \\\\ 
-&= H^{N_i}\left(H^{256-N_i}(private_i)\right) \\\\ 
-&= H^{256}(private_i) \\\\ 
-&= public_i 
-\end{aligned}
-$$
-
-Where:
-- \(V_i\) is the derived public key for each part of the signature.
-- \(H\) is the hash function (SHA-256).
-- \(N_i\) is the value of the corresponding byte in the hashed message \(m'\).
-- \(sign_i\) is the corresponding part of the signature.
-- \(private_i\) is the corresponding part of the private key.
-- \(public_i\) is the corresponding part of the public key.
-
-This mathematical representation shows that the verification is successful if the derived public key matches the originally generated public key.
-
-
-
+To exploit this, we craft two messages, `m1` and `m2`, such that each byte in `SHA-256(m1)` is greater than `SHA-256(m2)`. Then we calculate the differences between each byte of `SHA-256(m1)` and `SHA-256(m2)`. The server provides the signature of `m1`. We divide this signature into 32 chunks and hash each chunk according to its difference. This gives us the corresponding signature of `m2`, revealing the flag.
 
 ## Script for Finding Messages
 
