@@ -22,6 +22,7 @@ toc:
 
 Writeup for winter challenge of DiceCTF 2024.
 
+<!--more-->
 
 First, we are given the following code:
 
