@@ -81,7 +81,7 @@ if __name__ == '__main__':
 
 ## Code Description
 
-The Python code implements the WOTS and includes the following main functionalities:
+The Python code implements the **Winternitz One-Time Signature (WOTS)** and includes the following main functionalities:
 
 - `keygen`: Generates a pair of private and public keys.
 - `sign`: Signs a given message using the private key.
@@ -93,9 +93,37 @@ The script reads a message, signs it, and then asks for a new message and its si
 
 The verification method checks if the extracted public key from the provided signature matches the generated public key. The public key components are each of the private keys hashed 256 times.
 
-The signature consists of each of the 32 private keys hashed `256 - n` times, where `n` is the value of a byte of the message hashed with SHA-256.
+The signature consists of each of the 32 private keys hashed \(256 - n\) times, where \(n\) is the value of a byte of the message hashed with SHA-256.
 
-To exploit this, we craft two messages, `m1` and `m2`, such that each byte in `SHA-256(m1)` is greater than `SHA-256(m2)`. Then we calculate the differences between each byte of `SHA-256(m1)` and `SHA-256(m2)`. The server provides the signature of `m1`. We divide this signature into 32 chunks and hash each chunk according to its difference. This gives us the corresponding signature of `m2`, revealing the flag.
+To exploit this, we craft two messages, \(m_1\) and \(m_2\), such that each byte in \(\text{SHA-256}(m_1)\) is greater than \(\text{SHA-256}(m_2)\). Then we calculate the differences between each byte of \(\text{SHA-256}(m_1)\) and \(\text{SHA-256}(m_2)\). The server provides the signature of \(m_1\). We divide this signature into 32 chunks and hash each chunk according to its difference. This gives us the corresponding signature of \(m_2\), revealing the flag.
+
+Let’s denote the hash function as:
+
+\[
+h(x, n) = \underbrace{\text{SHA-256}(\text{SHA-256}(\dots \text{SHA-256}}_{\text{n times}}(x)\dots))
+\]
+
+Given the private key \( \text{sk} = (sk_1, sk_2, \dots, sk_{32}) \), the public key is computed as:
+
+\[
+\text{vk} = (h(sk_1, 256), h(sk_2, 256), \dots, h(sk_{32}, 256))
+\]
+
+When signing a message \(m\), we first compute \( m' = h(m, 1) \). The signature is then computed by hashing each private key component a number of times determined by the bytes of \( m' \):
+
+\[
+\text{sig} = (h(sk_1, 256 - m'_1), h(sk_2, 256 - m'_2), \dots, h(sk_{32}, 256 - m'_{32}))
+\]
+
+The verification process takes a message \( m \) and a signature \( \text{sig} \) and computes:
+
+\[
+\text{vk'} = (h(\text{sig}_1, m'_1), h(\text{sig}_2, m'_2), \dots, h(\text{sig}_{32}, m'_{32}))
+\]
+
+If \( \text{vk'} = \text{vk} \), the signature is valid.
+
+
 
 ## Script for Finding Messages
 
