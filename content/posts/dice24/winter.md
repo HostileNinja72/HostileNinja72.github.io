@@ -20,7 +20,7 @@ toc:
   enable: true
 ---
 
-Writeup for winter challenge of DiceCTF 2024.
+Writeup for Winter challenge from DiceCTF 2024.
 
 <!--more-->
 

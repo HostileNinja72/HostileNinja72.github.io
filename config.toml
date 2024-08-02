@@ -79,7 +79,7 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
   # website title for Open Graph and Twitter Cards
   title = "HostileNinja72's blog"
   # website description for RSS, SEO, Open Graph and Twitter Cards
-  description = "$ sudo apt install ctfwriteups"
+  description = "$ sudo apt install pwntools"
   # website images for Open Graph and Twitter Cards
   images = ["/logo.png"]
 
