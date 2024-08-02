@@ -20,7 +20,7 @@ toc:
   enable: true
 ---
 
-Winter Writeup
+Writeup for winter challenge of DiceCTF 2024.
 
 
 First, we are given the following code:
