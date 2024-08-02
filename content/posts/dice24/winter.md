@@ -22,7 +22,9 @@ toc:
 
 Winter Writeup
 
-## Provided code:
+
+First, we are given the following code:
+
 ```python
 import os
 from hashlib import sha256
