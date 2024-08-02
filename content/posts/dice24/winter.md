@@ -22,6 +22,8 @@ toc:
 
 Winter Writeup
 
+<!--more-->
+
 ## Provided code:
 ```python
 import os
@@ -97,31 +99,27 @@ The signature consists of each of the 32 private keys hashed \(256 - n\) times, 
 
 To exploit this, we craft two messages, \(m_1\) and \(m_2\), such that each byte in \(\text{SHA-256}(m_1)\) is greater than \(\text{SHA-256}(m_2)\). Then we calculate the differences between each byte of \(\text{SHA-256}(m_1)\) and \(\text{SHA-256}(m_2)\). The server provides the signature of \(m_1\). We divide this signature into 32 chunks and hash each chunk according to its difference. This gives us the corresponding signature of \(m_2\), revealing the flag.
 
-Let’s denote the hash function as:
+The verification process can be expressed as:
 
-\[
-h(x, n) = \underbrace{\text{SHA-256}(\text{SHA-256}(\dots \text{SHA-256}}_{\text{n times}}(x)\dots))
-\]
+$$
+\begin{aligned} 
+V_i &= H^{N_i}(sign_i) \\\\ 
+&= H^{N_i}\left(H^{256-N_i}(private_i)\right) \\\\ 
+&= H^{256}(private_i) \\\\ 
+&= public_i 
+\end{aligned}
+$$
 
-Given the private key \( \text{sk} = (sk_1, sk_2, \dots, sk_{32}) \), the public key is computed as:
+Where:
+- \(V_i\) is the derived public key for each part of the signature.
+- \(H\) is the hash function (SHA-256).
+- \(N_i\) is the value of the corresponding byte in the hashed message \(m'\).
+- \(sign_i\) is the corresponding part of the signature.
+- \(private_i\) is the corresponding part of the private key.
+- \(public_i\) is the corresponding part of the public key.
 
-\[
-\text{vk} = (h(sk_1, 256), h(sk_2, 256), \dots, h(sk_{32}, 256))
-\]
+This mathematical representation shows that the verification is successful if the derived public key matches the originally generated public key.
 
-When signing a message \(m\), we first compute \( m' = h(m, 1) \). The signature is then computed by hashing each private key component a number of times determined by the bytes of \( m' \):
-
-\[
-\text{sig} = (h(sk_1, 256 - m'_1), h(sk_2, 256 - m'_2), \dots, h(sk_{32}, 256 - m'_{32}))
-\]
-
-The verification process takes a message \( m \) and a signature \( \text{sig} \) and computes:
-
-\[
-\text{vk'} = (h(\text{sig}_1, m'_1), h(\text{sig}_2, m'_2), \dots, h(\text{sig}_{32}, m'_{32}))
-\]
-
-If \( \text{vk'} = \text{vk} \), the signature is valid.
 
 
 
