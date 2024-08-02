@@ -141,7 +141,7 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
   #  App icon config
   [params.app]
     # optional site title override for the app when added to an iOS home screen or Android launcher
-    title = "CTF Blogs"
+    title = "Blogs"
     # whether to omit favicon resource links
     noFavicon = false
     # modern SVG favicon to use in place of older style .png and .ico files
@@ -188,7 +188,7 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
       avatarURL = "https://avatars.githubusercontent.com/u/77463686?v=4"
       
       #  title shown in home page (HTML format is supported)
-      title = "CTF Blogs"
+      title = "Blogs"
       # subtitle shown in home page (HTML format is supported)
       subtitle = "$ sudo apt install pwntools"
       # whether to use typeit animation for subtitle

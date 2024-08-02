@@ -141,7 +141,7 @@ Message 2: cde750320a8389a6192216bf8bae3d37cd6d94a150741724d36305dfff746bb0
 Hash 2:    6da20d01be665436a03542585821a093539153735f7f22453fad3ba17003175c
 
 
-## Solution Script:
+## Solution Script
 
 ```python
 from hashlib import sha256
