@@ -209,9 +209,9 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
   # Social config about the author
   [params.social]
     GitHub = "HostileNinja72"
-    #Discord = "Tsumi #1307"
+    Discord = "hostileninja72"
     #RootMe= ""
-    #Email = "sumitalam@iut-dhaka.edu"
+    Email = "soufianessahli@proton.me"
     #RSS = true # 
 
   #  Page global config
