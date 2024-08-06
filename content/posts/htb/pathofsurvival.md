@@ -26,7 +26,7 @@ Writeup for Path of Survival challenge from HTB cyber apocalypse CTF 2024.
 
 <!--more-->
 
-# Initial Analysis
+## Initial Analysis
 
 Upon starting the instance, we get an ip and a port. As we connect, we see as it appears to be a game.
 
@@ -60,7 +60,7 @@ We also have been given the **time costs**:
 
 Noting we must win 100 times in a row, and given we have an API page `api` describing how to comm with the app, the solution is to script the process
 
-# Solution
+## Solution
 
 This is a path finding challenge, so we must implement a convenable algorithm.
 
@@ -127,6 +127,9 @@ f(n) &= g(n) + h(n) \\
 \end{aligned}
 $$
 
+$g(n)$: The actual cost from the start node to the current node $n$.
+$h(n)$: The heuristic estimated cost from the current node n to the goal node.
+
 Now with the implementation:
 We define first a function `get_cost`, that we will need in the `a_star` function.
 
@@ -186,7 +189,7 @@ def a_star(graph, start, goal, h):
 
     return None, float('inf')
 ```
-### Crafting the main Code
+## Main Code
 
 The main solution code:
 
