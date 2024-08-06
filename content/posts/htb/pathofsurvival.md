@@ -127,7 +127,7 @@ f(n) &= g(n) + h(n) \\
 \end{aligned}
 $$
 
-$g(n)$: The actual cost from the start node to the current node $n$.
+$g(n)$: The actual cost from the start node to the current node $n \\$ .
 $h(n)$: The heuristic estimated cost from the current node n to the goal node.
 
 Now with the implementation:
