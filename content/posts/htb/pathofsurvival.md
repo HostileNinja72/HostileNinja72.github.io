@@ -284,6 +284,8 @@ def get_directions_sequence(coordinates):
     return directions_sequence
 ```
 
+By running the code, We get the following flag: `HTB{i_h4v3_mY_w3ap0n_n0w_dIjKStr4!!!}`
+
 
 
 
