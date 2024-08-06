@@ -8,7 +8,7 @@ author: "HostileNinja72"
 authorLink: "https://HostileNinja72.github.io"
 description: "Writeup for Path of Survival Misc Challenge."
 
-tags: ["misc", "HTB", "algorithms", "djikstra", "hard"]
+tags: ["misc", "HTB", "algorithms", "djikstra", "hard", "A*"]
 categories: ["Writeups"]
 
 lightgallery: true
