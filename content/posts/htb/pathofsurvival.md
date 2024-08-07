@@ -1,50 +1,47 @@
----
-weight: 1
-title: "HTB Cyber Apocalypse 2024 - Path of Survival"
-date: 2024-01-29T16:37:00+06:00
-lastmod: 2024-01-29T16:37:00+06:00
-draft: false
-author: "HostileNinja72"
-authorLink: "https://HostileNinja72.github.io"
+weight: 1  
+title: "HTB Cyber Apocalypse 2024 - Path of Survival"  
+date: 2024-01-29T16:37:00+06:00  
+lastmod: 2024-01-29T16:37:00+06:00  
+draft: false  
+author: "HostileNinja72"  
+authorLink: "https://HostileNinja72.github.io"  
 description: "Writeup for Path of Survival Misc Challenge."
 
-tags: ["misc", "HTB", "algorithms", "djikstra", "hard", "A*"]
+tags: ["misc", "HTB", "algorithms", "Dijkstra", "hard", "A*"]  
 categories: ["Writeups"]
 
 lightgallery: true
 
-math:
+math:  
   enable: true
 
-toc:
+toc:  
   enable: true
+
 ---
 
-Writeup for Path of Survival challenge from HTB cyber apocalypse CTF 2024.
-
-
+Writeup for the "Path of Survival" challenge from HTB Cyber Apocalypse CTF 2024.
 
 <!--more-->
 
 ## Initial Analysis
 
-Upon starting the instance, we get an ip and a port. As we connect, we see as it appears to be a game.
+Upon starting the instance, we receive an IP and a port. Connecting to the service reveals what appears to be a game.
 
-<kbd> <img src="https://github.com/hostileninja72/hostileninja72.github.io/blob/main/content/posts/htb/initial_view.png?raw=true"
- style="border-radius:2%" align="center" width = "100%" /> </kbd>
+<kbd> <img src="https://github.com/hostileninja72/hostileninja72.github.io/blob/main/content/posts/htb/initial_view.png?raw=true" style="border-radius:2%" align="center" width = "100%" /> </kbd>
 
-We can see in the game, multiple squares, each one with a specific image, defining its nature in the game. There is also a player icon. To further understand, we have access to rules.
+The game features multiple squares, each with a specific image representing its nature. There is also a player icon. Reading the rules, we learn that the objective is to travel between tiles to reach a weapon tile before time runs out.
 
-Reading the rules, it is indeed a game, where we need to travel between tiles to get to a weapon tile, before the time runs out.
+### Rules Overview
 
 - **Empty** tiles cannot be accessed.
-- **Cliffs** can only be entered from top and the left.
-- **Geysers** can only be entered from bottom and the right.
+- **Cliffs** can only be entered from the top and left.
+- **Geysers** can only be entered from the bottom and right.
 
-We also have been given the **time costs**:
+### Time Costs
 
-- A movement to or from a **Cliff** or **Geyser** costs 1 time point.
-- A travel from a tile of one terrain to another tile of the same terrain cost 1 time point.
+- Movement to/from a **Cliff** or **Geyser**: 1 time point
+- Travel from one tile of terrain to another of the same terrain: 1 time point
 - Plains to Mountain: 5
 - Mountain to Plains: 2
 - Plains to Sand: 2
@@ -58,23 +55,19 @@ We also have been given the **time costs**:
 - Sand to River: 8
 - River to Sand: 6
 
-Noting we must win 100 times in a row, and given we have an API page `api` describing how to comm with the app, the solution is to script the process
+To win 100 times consecutively, we need to automate the process using the provided API.
 
 ## Solution
 
-This is a path finding challenge, so we must implement a convenable algorithm.
+This is a pathfinding challenge, so we must implement an appropriate algorithm. I chose the A* algorithm over Dijkstra's because A* is designed for finding the shortest path from a single source to a single target node, combining efficiency and accuracy.
 
-The choices for me were between `A*` algorithm and `djikstra's` algorithm.
+### Setting Up
 
-I chose to use `A*` as it is specifically designed for finding the shortest path from a single source node to a single target node. Also to further explore this algorithm as i am used to **djikstra** in my network classes.
+#### Building the Code
 
+First, I set up a cost dictionary:
 
-## Setting Up
-
-### Building the code
-I started by setting up a cost dictionary 
-
-```python 
+```python
 costs = {
     ('P', 'M'): 5,
     ('M', 'P'): 2,
@@ -89,10 +82,10 @@ costs = {
     ('S', 'R'): 8,
     ('R', 'S'): 6
 }
-``` 
+```
 
 next we should understand the format of the api response.
-Upon sending a post request we get the following:
+Upon sending a POST request, we receive the following response:
 
 ```python
 {'height': 10, 'player': {'position': [10, 8], 'time': 21}, 'tiles': {'(0, 0)': {'has_weapon': False, 'terrain': 'P'}, '(0, 1)': {'has_weapon': False, 'terrain': 'P'} [...]}, 'width': 15}
@@ -131,7 +124,8 @@ $g(n)$: The actual cost from the start node to the current node $n \\$ .
 $h(n)$: The heuristic estimated cost from the current node n to the goal node.
 
 Now with the implementation:
-We define first a function `get_cost`, that we will need in the `a_star` function.
+First we define a function `get_cost`, that we will need in the `a_star` function.
+In this function we define the constraints giving in rules.
 
 ```python 
 def get_cost(current, neighbor, graph):
@@ -150,9 +144,8 @@ def get_cost(current, neighbor, graph):
     return costs.get((current_terrain, neighbor_terrain), 1)
 ```
 
-In this function we define the constraints giving in rules.
 
-A star code:
+Here is the `A*` algorithm:
 
 ```python
 def a_star(graph, start, goal, h):
@@ -261,7 +254,7 @@ for i in tqdm(range(100), desc="FOR THE FLAG WE GOOO"):
     send_directions_and_process_responses(url, direction_sequence)
 ```
 
-It is worth noting that we have also defined a function `get_directions_sequence` that will translate the change in directions and sequences of **L or R or D or U** so the server can understand our requests.
+It is worth noting that we have also defined a function `get_directions_sequence` that will translate the change in directions and sequences of **L, R, D or U** so the server can understand our requests.
 
 ```python
 def get_directions_sequence(coordinates):
