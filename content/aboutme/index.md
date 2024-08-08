@@ -12,7 +12,7 @@ math:
 
 # Background Information
 
-I am **Soufiane Essahli**  (aka HostileNinja72), a passioned Cybersecurity student and member of the CTF team [0xNox](https://ctftime.org/team/271912) of The Euromed University of Fes. My journey into the world of cybersecurity and computer science is fueled by a never ending curiosity that has driven me since childhood to understand how things work.
+I am **Soufiane Essahli**  (aka *HostileNinja72*), a passioned Cybersecurity student and member of the CTF team [0xNox](https://ctftime.org/team/271912) of The Euromed University of Fes. My journey into the world of cybersecurity and computer science is fueled by a never ending curiosity that has driven me since childhood to understand how things work.
 
 Beyond my academic pursuits, I have a deep passion for Astronomy, Philosophy and Sciences in general, which has helped me a lot into being an interdisciplinary thinker.
  
