@@ -3,7 +3,7 @@ weight: 1
 title: "LIT CTF 2024 - Symmetric RSA"
 date: 2024-08-11T16:37:00+06:00
 lastmod: 2024-08-11T16:37:00+06:00
-draft: false
+draft: true
 author: "HostileNinja72"
 authorLink: "https://HostileNinja72.github.io"
 description: "LIT Crypto Writeups"
