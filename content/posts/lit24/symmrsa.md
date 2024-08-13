@@ -70,9 +70,7 @@ $$
 By applying **Fermat's little theorem**, we can notice that $p$ gonna is:
 
 $$
-\begin{aligned}
 gcd(ct_{2} - 2, ct_{3} - 3) = p
-\end{aligned}
 $$
 
 #### Finding n
