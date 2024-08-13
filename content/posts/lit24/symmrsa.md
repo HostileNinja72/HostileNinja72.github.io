@@ -54,7 +54,7 @@ for _ in range(4):
 #### Code Analysis
 We automatically notice the abnormal use of $e$ as the prime $p$.
 
-The code gives us the encryption of the flag as the first CT, then it gives us the possibility to encrypt 4 inputs of our choice.
+The code gives us the encryption of the flag as the first `CT`, then it gives us the possibility to encrypt 4 inputs of our choice.
 
 #### Recovering p
 
@@ -69,14 +69,18 @@ $$
 
 By applying **Fermat's little theorem**:
 $$
-2^p \equiv 2 \mod p \\ 
-3^p \equiv 3 \mod p
+\begin{aligned}
+2^p \equiv 2 \pmod{p} \\\
+3^p \equiv 3 \pmod{p}
+\end{aligned}
 $$
 
 after substracting we get:
 $$
+\begin{aligned}
 ct_{2} - 2 \equiv 0 \pmod{p}
 ct_{3} - 3 \equiv 0 \pmod{p}
+\end{aligned}
 $$
 
 
@@ -167,9 +171,9 @@ print(f"{CT = }")
 print(f"{n = }")
 
 ```
-We are giving $ct$ as the encryption on the flag, with the length of the flag `len(PT)`, and the value of $n$. Giving this setup, we will think of using the coppersmith attack.
+We are giving $ct$ as the encryption on the flag, with the length of the flag `len(PT)`, and the value of $n$.
 
-The encryption is done following this equation:
+Giving this setup, we will think of using the coppersmith attack. The encryption is done following this equation:
 
 $$ \begin{aligned} ct =  flag^p \pmod{n} \\ \end{aligned} $$
 
