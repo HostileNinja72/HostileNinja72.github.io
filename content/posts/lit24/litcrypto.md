@@ -102,7 +102,8 @@ Our $p$ is `odd`, as we send -1 to the server we will get:
 
 $$
 \begin{aligned}
-ct_{-1} = (-1)^p \pmod{n} \therefore n - 1 = (-1)^p \pmod{n} 
+ct_{-1} = (-1)^p \pmod{n} \\
+\therefore ct_{-1} \equiv -1 \equiv n - 1 \pmod{n}
 \end{aligned}
 $$
 
