@@ -83,7 +83,7 @@ $$
 -1 \equiv n - 1 \pmod{n} 
 \end{aligned}
 $$
-as we send -1 to the server we will get:
+Our $p$ is `odd`, as we send -1 to the server we will get:
 
 $$
 \begin{aligned}
