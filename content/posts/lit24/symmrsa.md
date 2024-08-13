@@ -67,7 +67,20 @@ ct_{3} = 3^p \pmod{n}
 \end{aligned}
 $$
 
-By applying **Fermat's little theorem**, we can notice that $p$ gonna is:
+By applying **Fermat's little theorem**:
+$$
+2^p \equiv 2 \mod p \\ 
+3^p \equiv 3 \mod p
+$$
+
+after substracting we get:
+$$
+ct_{2} - 2 \equiv 0 \pmod{p}
+ct_{3} - 3 \equiv 0 \pmod{p}
+$$
+
+
+Since both values are divisible by $p$, then $p$ must be :
 
 $$
 gcd(ct_{2} - 2, ct_{3} - 3) = p
