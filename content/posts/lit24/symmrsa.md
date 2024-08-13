@@ -24,7 +24,7 @@ Writeups for some Cryptography challenges in LITCTF 2024.
 
 <!--more-->
 
-# Symmetric RSA
+## Symmetric RSA
 
 In the description of the challenge we are given a server to connect to with nc with a chall code:
 
@@ -51,12 +51,12 @@ for _ in range(4):
 	print(f"{CT = }")
 
 ```
-## Code Analysis
+#### Code Analysis
 We automatically notice the abnormal use of $e$ as the prime $p$.
 
 The code gives us the encryption of the flag as the first CT, then it gives us the possibility to encrypt 4 inputs of our choice.
 
-## Recovering p
+#### Recovering p
 
 We send 2 intputs, $2$ and $3$ and we get: 
 
@@ -75,7 +75,7 @@ gcd(ct_{2} - 2, ct_{3} - 3) = p
 \end{aligned}
 $$
 
-## Finding n
+#### Finding n
 
 For n we can find it with:
 $$
@@ -93,7 +93,7 @@ $$
 
 Meaning we can extract n by adding `1` to the output.
 
-## Solution Code
+#### Solution Code
 We apply our logic in a code to get the flag:
 
 ```python
@@ -131,7 +131,7 @@ print(flag)
 
 > FLAG : **LITCTF{ju57_u53_e=65537_00a144ca}**
 
-# Truly symmetric RSA
+## Truly symmetric RSA
 
 This challenge has the same concept as before, $e = p$.
 
@@ -167,7 +167,7 @@ $$ \begin{aligned} ct =  flag^p \pmod{p} \\ \end{aligned} $$
 
 By applying **Fermat's little theorem** we have:
 $$ \begin{aligned} flag^p \equiv flag \mod{p} \end{aligned} $$
-hence we can write:
+so we can write:
 $$
 \begin{aligned}
 ct \equiv flag \mod{p}
@@ -179,6 +179,7 @@ $$
 f(\text{flag}_0) \equiv 0 \mod n \quad \text{with} \quad \text{flag}_0 < X
 $$
 
+#### Solution Code
 We apply this in a sage code:
 ```python 
 from sage.all import *
