@@ -8,7 +8,7 @@ author: "HostileNinja72"
 authorLink: "https://HostileNinja72.github.io"
 description: "LIT Crypto Writeups"
 
-tags: ["crypto", "LIT CTF", "RSA", "Asymmetric encryption"]
+tags: ["crypto", "LIT CTF", "RSA", "coppermsith", "modular arithmetic"]
 categories: ["Writeups"]
 
 lightgallery: true
