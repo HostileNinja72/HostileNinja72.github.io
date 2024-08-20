@@ -1,15 +1,15 @@
 ---
 weight: 1
-title: "LIT CTF 2024 - Crypto writeups"
-date: 2024-08-11T16:37:00+06:00
-lastmod: 2024-08-11T16:37:00+06:00
+title: "LeetCode - 1870, Minimum Speed to Arrive on Time"
+date: 2024-08-20T16:37:00+06:00
+lastmod: 2024-08-20T16:37:00+06:00
 draft: false
 author: "HostileNinja72"
 authorLink: "https://HostileNinja72.github.io"
-description: "LIT Crypto Writeups"
+description: "LeetCode 1870 solution explanation"
 
-tags: ["crypto", "LIT CTF", "RSA", "coppermsith", "modular arithmetic"]
-categories: ["Writeups"]
+tags: ["LeetCode", "Medium", "binary search", "C++"]
+categories: ["LeetCode"]
 
 lightgallery: true
 
@@ -20,209 +20,84 @@ toc:
   enable: true
 ---
 
-Writeups for some Cryptography challenges in LITCTF 2024.
+LeetCode 1870 solution explanation
 
 <!--more-->
 
-## Symmetric RSA
+## Challenge Description
 
-In the description of the challenge we are given a server to connect to with nc with a chall code:
+You are given a floating-point number hour, representing the amount of time you have to reach the office. To commute to the office, you must take n trains in sequential order. You are also given an integer array dist of length n, where `dist[i]` describes the distance (in kilometers) of the `ith` train ride.
+
+Each train can only depart at an integer hour, so you may need to wait in between each train ride.
+
+    For example, if the 1st train ride takes $1.5$ hours, you must wait for an additional 0.5 hours before you can depart on the 2nd train ride at the 2 hour mark.
+
+Return the minimum positive integer speed (in kilometers per hour) that all the trains must travel at for you to reach the office on time, or $-1$ if it is impossible to be on time.
+
+Tests are generated such that the answer will not exceed $10^7$ and hour will have at most two digits after the decimal point.
 
 
-```python
-#!/usr/bin/env python3
-from Crypto.Util.number import long_to_bytes as ltb, bytes_to_long as btl, getPrime
+**Example 1:**
 
-p = getPrime(1024)
-q = getPrime(1024)
+Input: `dist = [1,3,2]`, hour = 6
+Output: 1
+Explanation: At speed 1:
+- The first train ride takes 1/1 = 1 hour.
+- Since we are already at an integer hour, we depart immediately at the 1 hour mark. The second train takes 3/1 = 3 hours.
+- Since we are already at an integer hour, we depart immediately at the 4 hour mark. The third train takes 2/1 = 2 hours.
+- You will arrive at exactly the 6 hour mark.
 
-n = p*q
+## Reformulating the problem
 
-e = p
+We first try to reformulate the problem so we can easily write it as an solve algorithm.
 
-with open("flag.txt", "rb") as f:
-	PT = btl(f.read())
+From the explanation, if we are in an integer hour, we depart immediately, so the time will be $d\frac{\text{dist}[i]}{x}$ such as $x$ is the speed value we are looking for. If we are not in an integer hour, we wait until the 1 hour mark, meaning we are waiting a time value of $\frac{\text{dist}[i]}{x} + \left\lceil \frac{\text{dist}[i]}{x} \right\rceil$ - \frac{\text{dist}[i]}{x}. The last distance will be a normal $\frac{\text{dist}[i]}{x}$.
 
-CT = pow(PT, e, n)
-print(f"{CT = }")
+Our task is to find the minimum possible $x$ which is the speed such as the sum of the time $\leq$ hour, in other words:
 
-for _ in range(4):
-	CT = pow(int(input("Plaintext: ")), e, n)
-	print(f"{CT = }")
+$$
+\begin{aligned}
+\sum_{i=1}^{n-1} \left\lceil \frac{\text{dist}[i]}{x} \right\rceil + \frac{\text{dist}[N]}{x} \leq \text{hour}
+\end{aligned}
+$$
 
+Now we are in front of a non-linear function that involves a ceiling function, the binary search is an efficient way to find the minimum `x`
+
+## Binary search code
+We implement a binary search algorithm in a code:
+
+```cpp
+class Solution {
+public:
+bool canReachInTime(const vector<int> &dist, double hour, int speed)
+{
+    double time = 0;
+    for (size_t i = 0; i < dist.size() - 1; ++i)
+        time += ceil(static_cast<double>(dist[i]) / speed);
+    
+    time += static_cast<double>(dist.back()) / speed;
+    return time <= hour;
+}
+
+int minSpeedOnTime(vector<int> &dist, double hour)
+{
+    int low = 1, high = 1e7;
+    while (low < high)
+    {
+        int mid = low + (high - low) / 2;
+        if (canReachInTime(dist, hour, mid))
+            high = mid;
+        else
+        low = mid + 1;
+        
+    }
+        return canReachInTime(dist, hour, low) ?  low : -1;
+
+}
+
+};
 ```
-#### Code Analysis
-We automatically notice the abnormal use of $e$ as the prime $p$.
-
-The code gives us the encryption of the flag as the first `CT`, then it gives us the possibility to encrypt 4 inputs of our choice.
-
-#### Recovering p
-
-We send 2 intputs, $2$ and $3$ and we get: 
-
-$$
-\begin{aligned}
-ct_{2} = 2^p \pmod{n} \\\
-ct_{3} = 3^p \pmod{n}
-\end{aligned}
-$$
-
-By applying **Fermat's little theorem**:
-$$
-\begin{aligned}
-2^p \equiv 2 \pmod{p} \\\
-3^p \equiv 3 \pmod{p}
-\end{aligned}
-$$
-
-after substracting we get:
-$$
-\begin{aligned}
-ct_{2} - 2 \equiv 0 \pmod{p}
-ct_{3} - 3 \equiv 0 \pmod{p}
-\end{aligned}
-$$
-
-
-Since both values are divisible by $p$, then $p$ must be :
-
-$$
-gcd(ct_{2} - 2, ct_{3} - 3) = p
-$$
-
-#### Finding n
-
-For n we can find it with:
-$$
-\begin{aligned}
--1 \equiv n - 1 \pmod{n} 
-\end{aligned}
-$$
-Our $p$ is `odd`, as we send -1 to the server we will get:
-
-$$
-\begin{aligned}
-ct_{-1} = (-1)^p \pmod{n} \\
-\therefore ct_{-1} \equiv -1 \equiv n - 1 \pmod{n}
-\end{aligned}
-$$
-
-Meaning we can extract n by adding `1` to the output.
-
-#### Solution Code
-We apply our logic in a code to get the flag:
-
-```python
-from pwn import remote
-from math import gcd
-from Crypto.Util.number import long_to_bytes as ltb
-
-r = remote('litctf.org', 31783)
-
-r.recvuntil("CT = ")
-ct_flag = int(r.recvline().strip())
-print(f"Initial CT (flag): {ct_flag}")
-
-ciphers = []
-
-for plaintext in [2, 3, -1]:
-    r.sendline(str(plaintext))
-    r.recvuntil("CT = ")
-    ct = int(r.recvline().strip())
-    ciphers.append(ct)
-    print(f"CT for plaintext {plaintext}: {ct}")
-r.close()
-
-p = gcd(ciphers[0]-2, ciphers[1]-3) 
-n = ciphers[2] + 1
-q = n // p
-
-phi = (p-1)*(q-1)
-d = pow(p, -1, phi)
-
-flag = ltb(pow(ct_flag, d, n))
-print(flag)
-
-```
-
-> FLAG : **LITCTF{ju57_u53_e=65537_00a144ca}**
-
-## Truly symmetric RSA
-
-This challenge has the same concept as before, $e = p$.
-
-Here is The script:
-```python
-#!/usr/bin/env python3
-from Crypto.Util.number import long_to_bytes as ltb, bytes_to_long as btl, getPrime
-
-p = getPrime(1536)
-q = getPrime(1024)
-
-n = p*q
-
-e = p
-
-with open("flag.txt", "rb") as f:
-	PT = f.read()
-
-CT = pow(btl(PT), e, n)
-print(f"{len(PT) = }")
-print(f"{CT = }")
-print(f"{n = }")
-
-```
-We are giving $ct$ as the encryption on the flag, with the length of the flag `len(PT)`, and the value of $n$.
-
-Giving this setup, we will think of using the coppersmith attack. The encryption is done following this equation:
-
-$$ \begin{aligned} ct =  flag^p \pmod{n} \\ \end{aligned} $$
-
-hence:
-$$ \begin{aligned} ct =  flag^p \pmod{p} \\ \end{aligned} $$
-
-By applying **Fermat's little theorem** we have:
-$$ \begin{aligned} flag^p \equiv flag \mod{p} \end{aligned} $$
-so we can write:
-$$
-\begin{aligned}
-ct \equiv flag \mod{p}
-\end{aligned}
-$$
-
-Now we apply the coppersmith's method. We define a polynomial $f(\text{flag}) = \text{flag} - \text{CT} $ over the ring  $ \mathbb{Z}/n\mathbb{Z}$. We seek a small root 
-$$
-f(\text{flag}_0) \equiv 0 \mod n \quad \text{with} \quad \text{flag}_0 < X
-$$
-
-#### Solution Code
-We apply this in a sage code:
-```python 
-from sage.all import *
-from Crypto.Util.number import long_to_bytes
-
-CT = 155493050716775929746785618157278421579720146882532893558466000717535926046092909584621507923553076649095497514130410050189555400358836998046081044415327506184740691954567311107014762610207180244423796639730694535767800541494145360577247063247119137256320461545818441676395182342388510060086729252654537845527572702464327741896730162340787947095811174459024431128743731633252208758986678350296534304083983866503070491947276444303695911718996791195956784045648557648959632902090924578632023471001254664039074367122198667591056089131284405036814647516681592384332538556252346304161289579455924108267311841638064619876494634608529368113300787897715026001565834469335741541960401988282636487460784948272367823992564019029521793367540589624327395326260393508859657691047658164
-n = 237028545680596368677333357016590396778603231329606312133319254098208733503417614163018471600330539852278535558781335757092454348478277895444998391420951836414083931929543660193620339231857954511774305801482082186060819705746991373929339870834618962559270938577414515824433025347138433034154976346514196324140384652533471142168980983566738172498838845701175448130178229109792689495258819665948424614638218965001369917045965392087331282821560168428430483072251150471592683310976699404275393436993044069660277993965385069016086918288886820961158988512818677400870731542293709336997391721506341477144186272759517750420810063402971894683733280622802221309851227693291273838240078935620506525062275632158136289150493496782922917552121218970809807935684534511493363951811373931
-
-PR.<flag> = PolynomialRing(Zmod(n))
-
-f = flag - CT
-
-X = 2**(8*62) # len(flag) is 62
-beta = 0.41
-roots = f.small_roots(X=X, beta=beta)
-
-
-recovered_flag = long_to_bytes(int(roots[0])).decode()
-print("Recovered flag:", recovered_flag)
-
-```
->FLAG : **LITCTF{I_thought_the_bigger_the_prime_the_better_:(_72afea90}**
-
-
-
-
-
+And then our submission will get all the tests validated.
 
 
 
