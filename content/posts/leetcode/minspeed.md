@@ -26,7 +26,7 @@ LeetCode 1870 solution explanation
 
 ## Challenge Description
 
-You are given a floating-point number hour, representing the amount of time you have to reach the office. To commute to the office, you must take n trains in sequential order. You are also given an integer array dist of length n, where `dist[i]` describes the distance (in kilometers) of the `ith` train ride.
+You are given a floating-point number hour, representing the amount of time you have to reach the office. To commute to the office, you must take n trains in sequential order. You are also given an integer array dist of length n, where `dist[i]` describes the distance (in kilometers) of the $i^{\text{th}}$ train ride.
 
 Each train can only depart at an integer hour, so you may need to wait in between each train ride.
 
@@ -49,9 +49,9 @@ Explanation: At speed 1:
 
 ## Reformulating the problem
 
-We first try to reformulate the problem so we can easily write it as an solve algorithm.
+Let's begin by reformulating the problem to make it easier to develop a solution algorithm.
 
-From the explanation, if we are in an integer hour, we depart immediately, so the time will be 
+Given the problem, if we are at an exact integer hour, we can depart immediately. In this case, the time taken for the $i^{\text{th}}$ train ride is:
 
 $$
 \begin{aligned}
@@ -59,7 +59,7 @@ $$
 \end{aligned}
 $$
 
-such as $x$ is the speed value we are looking for. If we are not in an integer hour, we wait until the 1 hour mark, meaning we are waiting a time value of
+where $x$ is the speed value we need to determine. If we arrive at a non-integer hour, we must wait until the next full hour before we can depart. Therefore, the effective time spent includes this waiting period, which can be represented as:
  
 $$
 \begin{aligned}
@@ -67,7 +67,7 @@ $$
 \end{aligned}
 $$
 
-The last distance will be a normal.
+For the last train ride, there is no need to wait, so the time taken is simply:
 
 $$
 \begin{aligned}
@@ -75,7 +75,7 @@ $$
 \end{aligned}
 $$
 
-Our task is to find the minimum possible $x$ which is the speed such as the sum of the time $\leq$ hour, in other words:
+Our objective is to find the minimum speed $x$ such that the total time spent on all train rides is less than or equal to the given hour. This can be expressed mathematically as:
 
 $$
 \begin{aligned}
@@ -83,7 +83,7 @@ $$
 \end{aligned}
 $$
 
-Now we are in front of a non-linear function that involves a ceiling function, the binary search is an efficient way to find the minimum `x`
+Given that this is a non-linear function involving a ceiling operation, binary search is a suitable and efficient method to find the minimum value of x that satisfies this condition.
 
 ## Binary search code
 We implement a binary search algorithm in a code:
