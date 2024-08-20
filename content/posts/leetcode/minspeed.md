@@ -26,7 +26,7 @@ LeetCode 1870 solution explanation
 
 ## Challenge Description
 
-You are given a floating-point number hour, representing the amount of time you have to reach the office. To commute to the office, you must take n trains in sequential order. You are also given an integer array dist of length n, where dist[i] describes the distance (in kilometers) of the $i^th$ train ride.
+You are given a floating-point number hour, representing the amount of time you have to reach the office. To commute to the office, you must take n trains in sequential order. You are also given an integer array dist of length n, where `dist[i]` describes the distance (in kilometers) of the `ith` train ride.
 
 Each train can only depart at an integer hour, so you may need to wait in between each train ride.
 
@@ -39,7 +39,7 @@ Tests are generated such that the answer will not exceed $10^7$ and hour will ha
 
 **Example 1:**
 
-Input: dist = [1,3,2], hour = 6
+Input: `dist = [1,3,2]`, hour = 6
 Output: 1
 Explanation: At speed 1:
 - The first train ride takes 1/1 = 1 hour.
@@ -51,7 +51,7 @@ Explanation: At speed 1:
 
 We first try to reformulate the problem so we can easily write it as an solve algorithm.
 
-From the explanation, if we are in an integer hour, we depart immediately, so the time will be $dist[i]/x$ such as $x$ is the speed value we are looking for. If we are not in an integer hour, we wait until the 1 hour mark, meaning we are waiting a time value of $dist[i]/x + \left\lceil dist[i]/x \right\rceil$. The last distance will be a normal $dist[i]/x$.
+From the explanation, if we are in an integer hour, we depart immediately, so the time will be $d\frac{\text{dist}[i]}{x}$ such as $x$ is the speed value we are looking for. If we are not in an integer hour, we wait until the 1 hour mark, meaning we are waiting a time value of $\frac{\text{dist}[i]}{x} + \left\lceil \frac{\text{dist}[i]}{x} \right\rceil$ - \frac{\text{dist}[i]}{x}. The last distance will be a normal $\frac{\text{dist}[i]}{x}$.
 
 Our task is to find the minimum possible $x$ which is the speed such as the sum of the time $\leq$ hour, in other words:
 
