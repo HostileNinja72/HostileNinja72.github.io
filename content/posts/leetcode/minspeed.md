@@ -1,6 +1,6 @@
 ---
 weight: 1
-title: "LeetCode - 1870. Minimum Speed to Arrive on Time"
+title: "LeetCode - 1870, Minimum Speed to Arrive on Time"
 date: 2024-08-20T16:37:00+06:00
 lastmod: 2024-08-20T16:37:00+06:00
 draft: false
@@ -97,7 +97,7 @@ int minSpeedOnTime(vector<int> &dist, double hour)
 
 };
 ```
-
+And then our submission will get all the tests validated.
 
 
 
