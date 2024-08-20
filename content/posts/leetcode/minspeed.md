@@ -30,7 +30,7 @@ You are given a floating-point number hour, representing the amount of time you 
 
 Each train can only depart at an integer hour, so you may need to wait in between each train ride.
 
-    For example, if the 1st train ride takes $1.5$ hours, you must wait for an additional 0.5 hours before you can depart on the 2nd train ride at the 2 hour mark.
+- For example, if the 1st train ride takes $1.5$ hours, you must wait for an additional 0.5 hours before you can depart on the 2nd train ride at the 2 hour mark.
 
 Return the minimum positive integer speed (in kilometers per hour) that all the trains must travel at for you to reach the office on time, or $-1$ if it is impossible to be on time.
 
@@ -51,7 +51,29 @@ Explanation: At speed 1:
 
 We first try to reformulate the problem so we can easily write it as an solve algorithm.
 
-From the explanation, if we are in an integer hour, we depart immediately, so the time will be $d\frac{\text{dist}[i]}{x}$ such as $x$ is the speed value we are looking for. If we are not in an integer hour, we wait until the 1 hour mark, meaning we are waiting a time value of $\frac{\text{dist}[i]}{x} + \left\lceil \frac{\text{dist}[i]}{x} \right\rceil$ - \frac{\text{dist}[i]}{x}. The last distance will be a normal $\frac{\text{dist}[i]}{x}$.
+From the explanation, if we are in an integer hour, we depart immediately, so the time will be 
+
+$$
+\begin{aligned}
+\frac{\text{dist}[i]}{x}
+\end{aligned}
+$$
+
+such as $x$ is the speed value we are looking for. If we are not in an integer hour, we wait until the 1 hour mark, meaning we are waiting a time value of
+ 
+$$
+\begin{aligned}
+\frac{\text{dist}[i]}{x} + \left\lceil \frac{\text{dist}[i]}{x} \right\rceil - \frac{\text{dist}[i]}{x}
+\end{aligned}
+$$
+
+The last distance will be a normal.
+
+$$
+\begin{aligned}
+\frac{\text{dist}[i]}{x} 
+\end{aligned}
+$$
 
 Our task is to find the minimum possible $x$ which is the speed such as the sum of the time $\leq$ hour, in other words:
 
