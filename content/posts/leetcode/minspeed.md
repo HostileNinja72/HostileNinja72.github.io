@@ -9,7 +9,7 @@ authorLink: "https://HostileNinja72.github.io"
 description: "LeetCode 1870 solution explanation"
 
 tags: ["LeetCode", "Medium", "binary search", "C++"]
-categories: ["Writeups"]
+categories: ["LeetCode"]
 
 lightgallery: true
 
