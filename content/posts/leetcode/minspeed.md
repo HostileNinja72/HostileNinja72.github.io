@@ -79,14 +79,14 @@ Our objective is to find the minimum speed $x$ such that the total time spent on
 
 $$
 \begin{aligned}
-\sum_{i=1}^{n-1} \left\lceil \frac{\text{dist}[i]}{x} \right\rceil + \frac{\text{dist}[N]}{x} \leq \text{hour}
+\sum_{i=1}^{n-1} \left\lceil \frac{\text{dist}[i]}{x} \right\rceil + \frac{\text{dist}[n]}{x} \leq \text{hour}
 \end{aligned}
 $$
 
 Given that this is a non-linear function involving a ceiling operation, binary search is a suitable and efficient method to find the minimum value of x that satisfies this condition.
 
 ## Binary search code
-We implement a binary search algorithm in a code:
+We implement a binary search algorithm in a `C++` code:
 
 ```cpp
 class Solution {
@@ -101,7 +101,7 @@ bool canReachInTime(const vector<int> &dist, double hour, int speed)
     return time <= hour;
 }
 
-int minSpeedOnTime(vector<int> &dist, double hour)
+int minSpeedOnTime(const vector<int> &dist, double hour)
 {
     int low = 1, high = 1e7;
     while (low < high)
