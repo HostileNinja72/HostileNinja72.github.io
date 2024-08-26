@@ -255,7 +255,7 @@ for i in tqdm(range(100), desc="FOR THE FLAG WE GOOO"):
     send_directions_and_process_responses(url, direction_sequence)
 ```
 
-It is worth noting that we have also defined a function `get_directions_sequence` that will translate the change in directions and sequences of **L, R, D or U** so the server can understand our requests.
+It is worth noting that we have also defined a function `get_directions_sequence` that will translate the change in directionst into sequences of **L, R, D or U** so the server can understand our requests.
 
 ```python
 def get_directions_sequence(coordinates):
